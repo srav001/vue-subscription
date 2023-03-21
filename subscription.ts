@@ -45,30 +45,7 @@ export function useSubscription<T>(value: T) {
   }
 
   const extraHandlers = {
-    /**
-     * A method that allows you to delete a subscriber from the Set of subscribers.
-     * @param subscriber - Subscriber
-     */
-    $deleteSub(subscriber: Subscriber) {
-      deleteSubscriber(subscriber);
-    },
-    /**
-     * Manually trigger subscribers. Shouldn't be used unless explicity needed (rarely).
-     */
-    $triggerSubs() {
-      triggerSubscribers(_subRef.value);
-    },
-    /**
-     * It mutates the value of the object.
-     * @param mutator - (val: SubType) => SubType
-     */
-    $mutate(mutator: (val: SubType) => SubType) {
-      if (typeof _subRef.value !== 'object') {
-        throw new Error('Value passed is not an typeof object! Patch only accepts typeof object');
-      }
-      _subRef.value = mutator(_subRef.value);
-      triggerSubscribers(_subRef.value);
-    }
+   
   };
 
   interface $Sub {
@@ -100,30 +77,29 @@ export function useSubscription<T>(value: T) {
     set $subscriber(subscriber: Subscriber) {
       addSubscriber(subscriber);
     },
-    $triggerSubs: extraHandlers.$triggerSubs,
-    $deleteSub: extraHandlers.$deleteSub,
-    $mutate: extraHandlers.$mutate,
     /**
-     * A subscription object with all the core properties.
+     * A method that allows you to delete a subscriber from the Set of subscribers.
+     * @param subscriber - Subscriber
      */
-    $sub: {
-      get value() {
-        return _subRef.value;
-      },
-      set value(val) {
-        _subRef.value = val;
-        triggerSubscribers(val);
-      },
-      /**
-       * A Subscriber(function) is executed when the value is changed.
-       * @param subscriber - type Subscriber = (val: SubType) => Promise<void> | void | Promise<SubType> | SubType;
-       */
-      set subscriber(subscriber: Subscriber) {
-        addSubscriber(subscriber);
-      },
-      triggerSubs: extraHandlers.$triggerSubs,
-      deleteSub: extraHandlers.$deleteSub,
-      mutate: extraHandlers.$mutate
+    $deleteSub(subscriber: Subscriber) {
+      deleteSubscriber(subscriber);
+    },
+    /**
+     * Manually trigger subscribers. Shouldn't be used unless explicity needed (rarely).
+     */
+    $triggerSubs() {
+      triggerSubscribers(_subRef.value);
+    },
+    /**
+     * It mutates the value of the object.
+     * @param mutator - (val: SubType) => SubType
+     */
+    $mutate(mutator: (val: SubType) => SubType) {
+      if (typeof _subRef.value !== 'object') {
+        throw new Error('Value passed is not an typeof object! Patch only accepts typeof object');
+      }
+      _subRef.value = dynamicallyExecuteFunction(mutator, _subRef.value);
+      triggerSubscribers(_subRef.value);
     }
     // Why must typescript be weird? Just to get intellisense for subscriptions.
   } as unknown as {
