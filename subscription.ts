@@ -43,32 +43,33 @@ export function useSubscription<T>(value: T) {
   function triggerSubscribers(val: SubType) {
     _subscriptions.forEach(dep => dynamicallyExecuteFunction(dep, val));
   }
-
-  const extraHandlers = {
-   
-  };
-
-  interface $Sub {
-    triggerSubs: typeof extraHandlers['$triggerSubs'];
-    /**
-     * A Subscriber(function) is executed when the value is changed.
-     * @param subscriber - type Subscriber = (val: SubType) => Promise<void> | void | Promise<SubType> | SubType;
-     */
-    subscriber: Subscriber;
-    mutate: typeof extraHandlers['$mutate'];
-    value: typeof _subRef['value'];
+  
+  function mutateSubscriber(mutator: (val: SubType) => SubType) {
+    _subRef.value = dynamicallyExecuteFunction(mutator, _subRef.value);
+    triggerSubscribers(_subRef.value);
   }
-
-  return {
-    get value() {
-      return _subRef.value;
-    },
-    set value(val) {
+  
+  function setvValue(val) {
       _subRef.value = val;
       triggerSubscribers(val);
+  },
+
+  return {
+    get $value() {
+      return _subRef.value;
     },
+    set $value(val) {
+      setValue(val);
+    },
+    $get() {
+      return _subRef.value;
+    },
+    $set(val) {
+      if(typeof val === 'Function') setValue(val(_subRef.value))
+      else setValue(val);
+    }
     /** ReadOnly version of value. Wraps the shallow ref in readonly */
-    $ref: readonly(_subRef),
+    $read: readonly(_subRef),
 
     /**
      * A Subscriber(function) is executed when the value is changed.
@@ -98,14 +99,12 @@ export function useSubscription<T>(value: T) {
       if (typeof _subRef.value !== 'object') {
         throw new Error('Value passed is not an typeof object! Patch only accepts typeof object');
       }
-      _subRef.value = dynamicallyExecuteFunction(mutator, _subRef.value);
-      triggerSubscribers(_subRef.value);
+      mutateSubscriber(mutator);
     }
     // Why must typescript be weird? Just to get intellisense for subscriptions.
   } as unknown as {
-    $ref: DeepReadonly<$Sub['value']>;
+    $read: DeepReadonly<$Sub['value']>;
     $subscriber: Subscriber;
-    value: $Sub['value'];
-    $sub: $Sub;
+    $value: $Sub['value'];
   } & typeof extraHandlers;
 }
