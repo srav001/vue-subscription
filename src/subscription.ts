@@ -1,4 +1,4 @@
-import { dynamicallyExecuteFunction } from './utilities/helpers';
+import { dynamicallyExecuteFunction } from './functions/helpers';
 import type { DeepReadonly } from 'vue';
 
 /**
