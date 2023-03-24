@@ -4,8 +4,6 @@ This Vue package provides a simple way to create reactive subscriptions that can
 
 The `useSubscription` function takes an initial value and returns an object with a reactive value of the initial value passed in, and a subscriber can be added to be executed when the value is changed.
 
----
-
 ## Installation and Import
 
 To use this package, you can install it via npm:
@@ -17,11 +15,9 @@ npm install @vue-subscription
 
 ```typescript
 // In your file
-import { useSubscription } from '@vue-subscription';
+import { useSubscription } from 'vue-subscription';
 const $mySubscription = useSubscription('hello'); // Type will be string
 ```
-
----
 
 ## API
 
@@ -97,8 +93,6 @@ subscription.$mutate(value => {
 	return value;
 });
 ```
-
----
 
 ## Usage
 
@@ -201,8 +195,6 @@ $set(val => `Hello ${val}`);
 // Use the readonly version of the value
 console.log($read.value); // 'Hello world'
 ```
-
----
 
 ## Type definition
 
