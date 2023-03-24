@@ -231,3 +231,8 @@ An object with the following properties:
 - $deleteSub(subscriber: (value: T) => Promise<void> | void)) - A method for removing a subscriber from the subscription.
 - $triggerSubs() - A method for manually triggering all subscribers. This should rarely be necessary.
 - $mutate(mutator: (value: T) => T) - A method for updating the value of the subscription with a function that takes the current value as its argument and returns the new value. This should only be used for updating complex objects.
+
+## DEMO
+
+You can checkout the demo to test locally or on StackBlitz
+https://github.com/srav001/vue-subscription/tree/main/demo
