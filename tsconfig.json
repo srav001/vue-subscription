@@ -1,6 +1,6 @@
 {
 	"extends": "@vue/tsconfig/tsconfig.web.json",
-	"include": ["src/**/*.ts", "src/**/*.vue"],
+	"include": ["src/**/*.ts", "src/**/*.vue", "demo/main.ts", "demo/App.vue.ts", "demo/main.ts"],
 	"exclude": ["node_modules"],
 	"references": [
 		{
@@ -24,5 +24,5 @@
 		"lib": ["ESNext", "ESNext.AsyncIterable", "DOM"]
 	},
 	"types": ["vue", "@types/node"],
-	"files": ["src/types/*.d.ts"]
+	"files": ["src/types/reset.d.ts"]
 }
