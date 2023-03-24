@@ -5,10 +5,17 @@
  * @param {T} arg - The argument to pass to the function.
  * @returns A promise that resolves to the result of the function.
  */
+// eslint-disable-next-line @typescript-eslint/ban-types
 export async function dynamicallyExecuteFunction<T>(func: Function, arg: T) {
-  if (func.constructor.name === 'AsyncFunction') {
-    return func(arg);
-  }
-
-  return Promise.resolve(func(arg));
+	try {
+		const result = func(arg);
+		if (result instanceof Promise) {
+			return await result;
+		} else {
+			return result;
+		}
+	} catch (err) {
+		// eslint-disable-next-line no-console
+		console.error(err);
+	}
 }

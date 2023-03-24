@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "usernamehw.errorlens",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "wayou.vscode-todo-highlight"
+  ]
+}
