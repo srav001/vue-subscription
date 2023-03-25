@@ -10,7 +10,7 @@ To use this package, you can install it via npm:
 
 ```sh
 // In your console
-npm install @vue-subscription
+npm install vue-subscription
 ```
 
 ```typescript
