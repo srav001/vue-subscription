@@ -1,10 +1,10 @@
 # vue-subscription
 
+A type-safe 🔥, tiny ⭐️ &  fast ⚡️ replacement for EventBus in Vue 💚. Provides ESM and Common JS exports. Compatible with Vue versions `>=2.7.0` or `3.0.0`.
+
 This Vue package provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually.
 
 The `useSubscription` function takes an initial value and returns an object with a reactive value of the initial value passed in, and a subscriber can be added to be executed when the value is changed.
-
----
 
 ## Installation and Import
 
@@ -12,16 +12,14 @@ To use this package, you can install it via npm:
 
 ```sh
 // In your console
-npm install @vue-subscription
+npm install vue-subscription
 ```
 
 ```typescript
 // In your file
-import { useSubscription } from '@vue-subscription';
+import { useSubscription } from 'vue-subscription';
 const $mySubscription = useSubscription('hello'); // Type will be string
 ```
-
----
 
 ## API
 
@@ -97,8 +95,6 @@ subscription.$mutate(value => {
 	return value;
 });
 ```
-
----
 
 ## Usage
 
@@ -202,8 +198,6 @@ $set(val => `Hello ${val}`);
 console.log($read.value); // 'Hello world'
 ```
 
----
-
 ## Type definition
 
 ### Function Signature
@@ -239,3 +233,8 @@ An object with the following properties:
 - $deleteSub(subscriber: (value: T) => Promise<void> | void)) - A method for removing a subscriber from the subscription.
 - $triggerSubs() - A method for manually triggering all subscribers. This should rarely be necessary.
 - $mutate(mutator: (value: T) => T) - A method for updating the value of the subscription with a function that takes the current value as its argument and returns the new value. This should only be used for updating complex objects.
+
+## DEMO
+
+You can checkout the demo to test locally or on StackBlitz
+https://github.com/srav001/vue-subscription/tree/main/demo

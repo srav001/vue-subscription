@@ -2,10 +2,11 @@ import { dynamicallyExecuteFunction } from './functions/helpers';
 import { ref, shallowRef, readonly } from 'vue';
 
 /**
- * It takes a value and returns an object with a value property that is a shallowRef of the value.
+ * It takes a value and returns an object with a value property that is a shallowRef/ref of the value.
  * passed in, and Subscribers(function) are added to a list to be executed when the value is changed.
  * @param {T} value - T - The initial value of the subscription.
- * @returns A function that returns an object with a shallow reactive value, a subscriber and a
+ * @param {boolean} deep - T - If it should be deep reactivity. By default it is Shallow.
+ * @returns A function that returns an object with a shallow/deep reactive value, a subscriber and a
  * few extra methods.
  */
 export function useSubscription<T>(value: T, deep = false) {
