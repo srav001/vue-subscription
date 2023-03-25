@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const allowedTypes = [1, 2, 3];
+const allowedTypes = ['1', '2', '3'];
 
 /**
  * It takes the version number from the package.json file, increments it by one, and then updates the
@@ -17,7 +17,6 @@ async function updateVersion() {
 		const fileToEdit = path.resolve('package.json');
 		const editData = JSON.parse(fs.readFileSync(fileToEdit, { encoding: 'utf8' }));
 
-		console.log(process.argv);
 		const type = process.argv[2].split('=')[1]; // type entered
 		let { version } = editData;
 		const versionData = version.split('.');

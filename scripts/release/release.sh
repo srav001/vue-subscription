@@ -23,16 +23,22 @@ echo ""
 echo ""
 echo "       ${ongoing}${style}Updating versions in ${NC}Package JSONs..."
 echo ""
-
 node ./scripts/release/versionUpdater.cjs --type=$TYPE
 
 echo ""
 echo "       ${ongoing}${style}Building ${NC}Now..."
 echo ""
-
 pnpm build
+
+echo ""
+echo "       ${ongoing}${style}Updating in ${NC}Git..."
 echo ""
 node -e 'require("./scripts.cjs").gitUpdate()'
+
+echo ""
+echo "       ${ongoing}${style}Releasing to ${NC}NPM..."
+echo ""
+node -e 'require("./scripts.cjs").npmRelease()'
 
 echo ""
 echo "${NC}  -------------------------------------------"
