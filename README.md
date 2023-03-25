@@ -1,5 +1,7 @@
 # vue-subscription
 
+A type-safe 🔥, tiny ⭐️ &  fast ⚡️ replacement for EventBus in Vue 💚. Provides ESM and Common JS exports. Compatible with Vue versions `>=2.7.0` or `3.0.0`.
+
 This Vue package provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually.
 
 The `useSubscription` function takes an initial value and returns an object with a reactive value of the initial value passed in, and a subscriber can be added to be executed when the value is changed.
