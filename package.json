@@ -1,6 +1,6 @@
 {
   "name": "vue-subscription",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple ⭐️ & type-safe 🔥 replacement for EventBus in Vue 💚.",
   "scripts": {
     "dev": "vite",
