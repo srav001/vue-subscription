@@ -36,6 +36,21 @@ const $mySubscription = useSubscription('hello'); // Type will be string
 
 ## API
 
+### Using in template
+
+To display the state in template, you can either use the $value or $get.
+
+```vue
+
+<template>
+
+<div>{{ $mySubscription.$value }}</div> 
+<div>{{ $mySubscription.$get() }}</div>
+
+</template>
+
+```
+
 ### $value / $get()
 
 This property/method returns the current value of the subscription.
