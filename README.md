@@ -15,9 +15,9 @@ Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
 ## Introduction
 
-This [package](#https://www.npmjs.com/package/vue-subscription) provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually. Only 1.26 kB or gzip: 0.63 kB in size.
+This [package](#https://www.npmjs.com/package/vue-subscription) provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually. You can use it as a super charged ref since `$value is not automatically unwrapped in template`.
 
-The [useSubscription](#tldr) function takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. In addition to a value property, also provides `explicit getter and setter` if you like more control over the data.
+Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. In addition to the value property, also provides `explicit getter and setter` if you like more control over the state. 
 
 ## Installation
 
