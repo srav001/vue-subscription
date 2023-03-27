@@ -2,16 +2,26 @@
 
 A type-safe 🔥, tiny ⭐️ &  fast ⚡️ replacement for EventBus in Vue 💚. Provides ESM and Common JS exports. Compatible with Vue versions `>=2.7.0` or `3.0.0`.
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Type-Definition](#type-definition)
+- [DEMO](#demo)
+
+## Introduction
+
 This Vue package provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually.
 
 The `useSubscription` function takes an initial value and returns an object with a reactive value of the initial value passed in, and a subscriber can be added to be executed when the value is changed.
 
-## Installation and Import
+## Installation
 
 To use this package, you can install it via npm:
 
 ```sh
-// In your console
+# In your console
 npm install vue-subscription
 ```
 
@@ -66,7 +76,6 @@ function logValue(value) {
 }
 
 $mySubscription.$addSub(logValue);
-$mySubscription.$deleteSub(subscriber);
 ```
 
 ### $deleteSub
@@ -79,7 +88,7 @@ subscription.$deleteSub(logValue);
 
 ### $triggerSubs
 
-This method manually triggers all subscribers to the subscription.
+This method manually triggers all subscribers to the subscription. Should only be needed rarely.
 
 ```typescript
 subscription.$triggerSubs();
@@ -97,6 +106,8 @@ subscription.$mutate(value => {
 ```
 
 ## Usage
+
+All examples given below can be copy pasted into a file and tried out. 
 
 ### Basic Example
 
@@ -169,7 +180,7 @@ function tester() {
 tester();
 ```
 
-### Destructured
+### Destructured ( Getter and Setter )
 
 You can also destructure the properties to have a seperate getter and setter.
 
@@ -198,7 +209,7 @@ $set(val => `Hello ${val}`);
 console.log($read.value); // 'Hello world'
 ```
 
-## Type definition
+## Type-Definition
 
 ### Function Signature
 
@@ -231,10 +242,12 @@ An object with the following properties:
 - $read - A readonly reactive reference to the current value of the subscription.
 - $addSub(subscriber: (value: T) => Promise<void> | void)) - A method for adding a subscriber to the subscription. It can be `async`. The subscriber is a function that will be executed whenever the value of the subscription changes. It can take the new value of the subscription as its argument.
 - $deleteSub(subscriber: (value: T) => Promise<void> | void)) - A method for removing a subscriber from the subscription.
-- $triggerSubs() - A method for manually triggering all subscribers. This should rarely be necessary.
+- $triggerSubs() - A method for manually triggering all subscribers. Should only be needed rarely.
 - $mutate(mutator: (value: T) => T) - A method for updating the value of the subscription with a function that takes the current value as its argument and returns the new value. This should only be used for updating complex objects.
 
-## DEMO
+## Demo
 
-You can checkout the demo to test locally or on StackBlitz
+You can checkout the demo to test locally or on StackBlitz. Make sure to run `npm install` in the root folder or copy the Vue components over.
 https://github.com/srav001/vue-subscription/tree/main/demo
+	
+
