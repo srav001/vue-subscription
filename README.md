@@ -15,9 +15,9 @@ Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
 ## Introduction
 
-This [package](#https://www.npmjs.com/package/vue-subscription) provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually.
+This [package](#https://www.npmjs.com/package/vue-subscription) provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually. Only 1.26 kB or gzip: 0.63 kB.
 
-The [useSubscription](#tldr) function takes an initial value and returns an object with a reactive value of the initial value passed in, and a subscriber can be added to be executed when the value is changed.
+The [useSubscription](#tldr) function takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. In addition to a value property, also provides `explicit getter and setter` if you like more control over the data.
 
 ## Installation
 
@@ -214,7 +214,7 @@ console.log($read.value); // 'Hello world'
 
 ## Type-Definition
 
-### Function Signature
+`T` is a generic.
 
 ```typescript
 function useSubscription<T>(
@@ -236,7 +236,7 @@ function useSubscription<T>(
 
 ### Arguments
 
-value - The initial value of the subscription.
+value - The initial value of the subscription. Throws an error if value is absent.
 
 deep (optional) - Whether to create a shallow or deep reactive subscription. Defaults to false. Unless the subscription is used in template, watch, watchEffect or computed you don't need to add the deep flag.
 
