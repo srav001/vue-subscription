@@ -1,7 +1,18 @@
 {
   "name": "vue-subscription",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A simple ⭐️ & type-safe 🔥 replacement for EventBus in Vue 💚.",
+  "keywords": [
+    "web",
+    "vue",
+    "vuejs",
+    "vue-js",
+    "EventBus",
+    "front-end",
+    "subscriber",
+    "observable",
+    "subscription"
+  ],
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",

@@ -10,7 +10,7 @@ async function gitUpdate() {
 		fs.writeFileSync(releaseFile, JSON.stringify(releaseData, null, 2));
 
 		execWithSync(`git add .`);
-		execWithSync(`git commit -m "chore: releasing version ${version}"`);
+		execWithSync(`git commit --allow-empty -m "chore: releasing version ${version}"`);
 		execWithSync(`git tag ${version}`);
 		execWithSync(`git push origin ${version}`);
 
@@ -34,9 +34,5 @@ async function npmRelease() {
 module.exports = {
 	gitUpdate,
 	npmRelease,
-	release: () => {
-		execWithSync('ls', { stdio: 'inherit' });
-		console.log(true);
-		return execWithSync('sh ./scripts/release/release.sh');
-	}
+	release: () => execWithSync('sh ./scripts/release/release.sh')
 };

@@ -1,17 +1,30 @@
 # vue-subscription
 
-A type-safe 🔥, tiny ⭐️ &  fast ⚡️ replacement for EventBus in Vue 💚. Provides ESM and Common JS exports. Compatible with Vue versions `>=2.7.0` or `3.0.0`.
+A type-safe 🔥, tiny ⭐️ & fast ⚡️ replacement for EventBus in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports.
 
-This Vue package provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually.
+Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
-The `useSubscription` function takes an initial value and returns an object with a reactive value of the initial value passed in, and a subscriber can be added to be executed when the value is changed.
+## Table of Contents
 
-## Installation and Import
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Type-Definition](#type-definition)
+- [TLDR](#tldr)
+- [Demo](#demo)
 
-To use this package, you can install it via npm:
+## Introduction
+
+This [package](#https://www.npmjs.com/package/vue-subscription) provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually. Only 1.26 kB or gzip: 0.63 kB in size.
+
+The [useSubscription](#tldr) function takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. In addition to a value property, also provides `explicit getter and setter` if you like more control over the data.
+
+## Installation
+
+To use this package, you can install it via npm (or yarn or pnpm):
 
 ```sh
-// In your console
+# In your console
 npm install vue-subscription
 ```
 
@@ -58,7 +71,7 @@ console.log(readonlySubscription.value);
 
 ### $addSub
 
-This method adds a subscriber to the subscription. A subscriber is a function that takes the new value as an argument and is executed whenever the value changes. The subscriber can be `async`
+This method adds a subscriber to the subscription. A subscriber is a function that takes the new value as an argument and is executed whenever the value changes. The subscriber can be an `async` function.
 
 ```typescript
 function logValue(value) {
@@ -66,7 +79,6 @@ function logValue(value) {
 }
 
 $mySubscription.$addSub(logValue);
-$mySubscription.$deleteSub(subscriber);
 ```
 
 ### $deleteSub
@@ -79,7 +91,7 @@ subscription.$deleteSub(logValue);
 
 ### $triggerSubs
 
-This method manually triggers all subscribers to the subscription.
+This method manually triggers all subscribers to the subscription. Should only be needed rarely.
 
 ```typescript
 subscription.$triggerSubs();
@@ -97,6 +109,8 @@ subscription.$mutate(value => {
 ```
 
 ## Usage
+
+All examples given below can be copy pasted into a file and tried out if needed.
 
 ### Basic Example
 
@@ -125,7 +139,7 @@ $mySubscription.$value = 'world';
 
 // Subscriber runs here -  'The value is now: world'
 
-// Remove a subscriber (can be used in Unmount, beforeRouteLeave etc)
+// Remove a subscriber (can be used in onBeforeUnmount or beforeRouteLeave etc)
 $mySubscription.$deleteSub(mySubscriber);
 
 // Use the readonly version of the value
@@ -135,7 +149,7 @@ console.log(myReadonlyValue.value); // 'world'
 
 ### Complex state
 
-Example uses a complex objects which won't be tracked deeply by default. Unless the subscriber is used in templates, watch, watchEffect and computed you don't need to add the deep flag.
+Example uses a complex objects which won't be tracked deeply by default. Unless the subscription is used in template, watch, watchEffect or computed you don't need to add the deep flag.
 
 ```typescript
 const $mySubscription = useSubscription(
@@ -169,7 +183,7 @@ function tester() {
 tester();
 ```
 
-### Destructured
+### Destructured ( Getter and Setter )
 
 You can also destructure the properties to have a seperate getter and setter.
 
@@ -198,9 +212,9 @@ $set(val => `Hello ${val}`);
 console.log($read.value); // 'Hello world'
 ```
 
-## Type definition
+## Type-Definition
 
-### Function Signature
+`T` is a generic.
 
 ```typescript
 function useSubscription<T>(
@@ -218,23 +232,28 @@ function useSubscription<T>(
 };
 ```
 
+## TLDR
+
 ### Arguments
 
-value - The initial value of the subscription.
-deep (optional) - Whether to create a shallow or deep reactive subscription. Defaults to false.
-Return Value
-An object with the following properties:
+value - The initial value of the subscription. Throws an error if value is absent.
+
+deep (optional) - Whether to create a shallow or deep reactive subscription. Defaults to false. Unless the subscription is used in template, watch, watchEffect or computed you don't need to add the deep flag.
+
+### Return Value
+
+An object with the following properties (Type def above):
 
 - $value - The current value of the subscription.
-- $get() - A function that returns the current value of the subscription.
-- $set(value: T | ((value: T) => T)) - A function that sets the value of the subscription. If a function is passed, it will receive the current value of the subscription as its argument and should return the new value.
+- $get - A function that returns the current value of the subscription.
+- $set - A function that sets the value of the subscription. If a function is passed, it will receive the current value of the subscription as its argument and should return the new value.
 - $read - A readonly reactive reference to the current value of the subscription.
-- $addSub(subscriber: (value: T) => Promise<void> | void)) - A method for adding a subscriber to the subscription. It can be `async`. The subscriber is a function that will be executed whenever the value of the subscription changes. It can take the new value of the subscription as its argument.
-- $deleteSub(subscriber: (value: T) => Promise<void> | void)) - A method for removing a subscriber from the subscription.
-- $triggerSubs() - A method for manually triggering all subscribers. This should rarely be necessary.
-- $mutate(mutator: (value: T) => T) - A method for updating the value of the subscription with a function that takes the current value as its argument and returns the new value. This should only be used for updating complex objects.
+- $addSub - A method for adding a subscriber to the subscription. It can be `async`. The subscriber is a function that will be executed whenever the value of the subscription changes. It can take the new value of the subscription as its argument.
+- $deleteSub - A method for removing a subscriber from the subscription.
+- $triggerSubs - A method for manually triggering all subscribers. Should only be needed rarely.
+- $mutate - A method for updating the value of the subscription with a function that takes the current value as its argument and returns the new value. This should only be used for updating complex objects.
 
-## DEMO
+## Demo
 
-You can checkout the demo to test locally or on StackBlitz
+The demo shows the subscription being used with the eventBus APIs. You can checkout the demo to test locally or on StackBlitz. Make sure to run `npm install` in the root folder or copy the Vue components over from the demo here :-  
 https://github.com/srav001/vue-subscription/tree/main/demo
