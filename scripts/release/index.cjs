@@ -34,9 +34,5 @@ async function npmRelease() {
 module.exports = {
 	gitUpdate,
 	npmRelease,
-	release: () => {
-		execWithSync('ls', { stdio: 'inherit' });
-		console.log(true);
-		return execWithSync('sh ./scripts/release/release.sh');
-	}
+	release: () => execWithSync('sh ./scripts/release/release.sh')
 };
