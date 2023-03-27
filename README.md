@@ -1,6 +1,8 @@
 # vue-subscription
 
-A type-safe 🔥, tiny ⭐️ & fast ⚡️ replacement for EventBus in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports. Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
+A type-safe 🔥, tiny ⭐️ & fast ⚡️ replacement for EventBus in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports.
+
+Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
 ## Table of Contents
 
