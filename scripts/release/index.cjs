@@ -10,7 +10,7 @@ async function gitUpdate() {
 		fs.writeFileSync(releaseFile, JSON.stringify(releaseData, null, 2));
 
 		execWithSync(`git add .`);
-		execWithSync(`git commit -m "chore: releasing version ${version}"`);
+		execWithSync(`git commit --allow-empty -m "chore: releasing version ${version}"`);
 		execWithSync(`git tag ${version}`);
 		execWithSync(`git push origin ${version}`);
 

@@ -110,7 +110,7 @@ subscription.$mutate(value => {
 
 ## Usage
 
-All examples given below can be copy pasted into a file and tried out.
+All examples given below can be copy pasted into a file and tried out if needed.
 
 ### Basic Example
 
