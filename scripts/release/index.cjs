@@ -12,7 +12,7 @@ async function gitUpdate() {
 		execWithSync(`git add .`);
 		execWithSync(`git commit --allow-empty -m "chore: releasing version ${version}"`);
 		execWithSync(`git tag ${version}`);
-		execWithSync(`git push origin ${version}`);
+		execWithSync(`ggpush`);
 
 		return true;
 	} catch (e) {
