@@ -15,7 +15,6 @@ export async function dynamicallyExecuteFunction<T>(func: Function, arg: T) {
 			return result;
 		}
 	} catch (err) {
-		// eslint-disable-next-line no-console
-		console.error(err);
+		throw new Error('Function failed to run', { cause: err });
 	}
 }

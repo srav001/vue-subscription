@@ -1,6 +1,6 @@
 # vue-subscription
 
-A type-safe 🔥, tiny ⭐️ & fast ⚡️ replacement for EventBus in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports.
+A type-safe 🔥, tiny ⭐️ & fast ⚡️ replacement for EventBus / a super-charged ref in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports.
 
 Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
@@ -17,7 +17,7 @@ Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
 This [package](#https://www.npmjs.com/package/vue-subscription) provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value and trigger subscribers manually. You can use it as a super charged ref since `$value is not automatically unwrapped in template`.
 
-Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. In addition to the value property, also provides `explicit getter and setter` if you like more control over the state. 
+Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. In addition to the value property, also provides `explicit getter and setter` if you like more control over the state. Check out the [usage](#usage) examples to learn more.
 
 ## Installation
 
@@ -41,14 +41,12 @@ const $mySubscription = useSubscription('hello'); // Type will be string
 To display the state in template, you can either use the $value or $get.
 
 ```vue
-
 <template>
-
-<div>{{ $mySubscription.$value }}</div> 
-<div>{{ $mySubscription.$get() }}</div>
-
+	<div>{{ $mySubscription.$value }}</div>
+	<div>{{ $mySubscription.$get() }}</div>
+	<!-- Readonly version of the state -->
+	<div>{{ $mySubscription.$read.value }}</div>
 </template>
-
 ```
 
 ### $value / $get()
@@ -62,7 +60,7 @@ const value = $mySubscription.$get();
 
 ### $value = val / $set(val)
 
-This property/method sets the current value of the subscription.
+This property/method sets the current value of the subscription. Also the $set can be passed down a child component to update the state in parent.
 
 ```typescript
 $mySubscription.$value = 42;
@@ -259,7 +257,7 @@ deep (optional) - Whether to create a shallow or deep reactive subscription. Def
 
 An object with the following properties (Type def above):
 
-- $value - The current value of the subscription.
+- $value - The current value of the subscription. Doesn't unwrap in template.
 - $get - A function that returns the current value of the subscription.
 - $set - A function that sets the value of the subscription. If a function is passed, it will receive the current value of the subscription as its argument and should return the new value.
 - $read - A readonly reactive reference to the current value of the subscription.
