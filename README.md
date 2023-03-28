@@ -38,13 +38,13 @@ const $mySubscription = useSubscription('hello'); // Type will be string
 
 ### Using in template
 
-To display the state in template, you can either use the $value or $get.
+To display the state in template, you can either use the `$read` or `$get`. If you need 2-way data binding you can also use `$value`.
 
 ```vue
 <template>
 	<div>{{ $mySubscription.$value }}</div>
-	<div>{{ $mySubscription.$get() }}</div>
 	<!-- Readonly version of the state -->
+	<div>{{ $mySubscription.$get() }}</div>	
 	<div>{{ $mySubscription.$read.value }}</div>
 </template>
 ```
