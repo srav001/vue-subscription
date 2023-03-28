@@ -1,6 +1,6 @@
 # vue-subscription
 
-A type-safe 🔥, tiny ⭐️ & fast ⚡️ super-charged ref / eventBus replacement in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports.
+A type-safe 🔥 and tiny ⭐️ super-charged ref ⚡️ or eventBus replacement in Vue 💚. Compatible with Vue 2 ( 2.7.0 and above ) and Vue 3. Provides ESM and Common JS exports.
 
 Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
@@ -15,9 +15,9 @@ Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
 ## Introduction
 
-Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. The value property - `$value is not automatically unwrapped in template`. In addition to the value property, also provides `explicit getter and setter` if you like more control over the state. 
+Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. The value property, `$value is not automatically unwrapped in template`. Additionally, it also provides `explicit getter and setter` if you like more control over the state. 
 
-The package also provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value for complex objects and trigger subscribers manually if and when needed rarely. Check out the [usage](#usage) examples to learn more.
+The package also provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value for complex objects and trigger subscribers manually if and when needed rarely. Check out the [usage](#usage) examples.
 
 ## Installation
 
@@ -38,13 +38,13 @@ const $mySubscription = useSubscription('hello'); // Type will be string
 
 ### Using in template
 
-To display the state in template, you can either use the $value or $get.
+To display the state in template, you can either use the `$read` or `$get`. If you need 2-way data binding you can also use `$value`.
 
 ```vue
 <template>
 	<div>{{ $mySubscription.$value }}</div>
-	<div>{{ $mySubscription.$get() }}</div>
 	<!-- Readonly version of the state -->
+	<div>{{ $mySubscription.$get() }}</div>	
 	<div>{{ $mySubscription.$read.value }}</div>
 </template>
 ```
