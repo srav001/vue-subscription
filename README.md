@@ -15,7 +15,7 @@ Find it on `npm` - https://www.npmjs.com/package/vue-subscription.
 
 ## Introduction
 
-Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. The value property, `$value is not automatically unwrapped in template`. Additionally, it also provides `explicit getter and setter` if you like more control over the state. 
+Only 1.26 kB or gzip: 0.63 kB in size, the [useSubscription](#tldr) composable takes an initial value and returns an object with a reactive value that is by default shallow and only deep when explicitly enabled. The value property, `$value is not automatically unwrapped in template`. Additionally, it also provides `explicit getter and setter` if you like more control over the state.
 
 The package also provides a simple way to create reactive subscriptions that can be used to observe changes to a value and execute a list of subscribers when the value changes. It also includes methods to mutate the value for complex objects and trigger subscribers manually if and when needed rarely. Check out the [usage](#usage) examples.
 
@@ -31,7 +31,7 @@ npm install vue-subscription
 ```typescript
 // In your file
 import { useSubscription } from 'vue-subscription';
-const $mySubscription = useSubscription('hello'); // Type will be string
+const mySubscription = useSubscription('hello'); // Type will be string
 ```
 
 ## API
@@ -42,10 +42,10 @@ To display the state in template, you can either use the `$read` or `$get`. If y
 
 ```vue
 <template>
-	<div>{{ $mySubscription.$value }}</div>
+	<div>{{ mySubscription.$value }}</div>
 	<!-- Readonly version of the state -->
-	<div>{{ $mySubscription.$get() }}</div>	
-	<div>{{ $mySubscription.$read.value }}</div>
+	<div>{{ mySubscription.$get() }}</div>
+	<div>{{ mySubscription.$read.value }}</div>
 </template>
 ```
 
@@ -54,8 +54,8 @@ To display the state in template, you can either use the `$read` or `$get`. If y
 This property/method returns the current value of the subscription.
 
 ```typescript
-const value = $mySubscription.$value;
-const value = $mySubscription.$get();
+const value = mySubscription.$value;
+const value = mySubscription.$get();
 ```
 
 ### $value = val / $set(val)
@@ -63,14 +63,14 @@ const value = $mySubscription.$get();
 This property/method sets the current value of the subscription. Also the $set can be passed down a child component to update the state in parent.
 
 ```typescript
-$mySubscription.$value = 42;
-$mySubscription.$set(42);
+mySubscription.$value = 42;
+mySubscription.$set(42);
 ```
 
 The $set method can also accept a mutator function that takes the current value as an argument and returns the new value:
 
 ```typescript
-$mySubscription.$set(value => value + 1);
+mySubscription.$set(value => value + 1);
 ```
 
 ### $read
@@ -78,7 +78,7 @@ $mySubscription.$set(value => value + 1);
 This is a read-only version of the subscription value. It wraps the subscription in a readonly ref.
 
 ```typescript
-const readonlySubscription = $mySubscription.$read;
+const readonlySubscription = mySubscription.$read;
 console.log(readonlySubscription.value);
 ```
 
@@ -91,7 +91,7 @@ function logValue(value) {
 	console.log(`New value: ${value}`);
 }
 
-$mySubscription.$addSub(logValue);
+mySubscription.$addSub(logValue);
 ```
 
 ### $deleteSub
@@ -128,10 +128,10 @@ All examples given below can be copy pasted into a file and tried out if needed.
 ### Basic Example
 
 ```typescript
-const $mySubscription = useSubscription('hello'); // Type will be string
+const mySubscription = useSubscription('hello'); // Type will be string
 
 // Get the current value
-console.log($mySubscription.$value); // 'hello'
+console.log(mySubscription.$value); // 'hello'
 
 // Subscribers can `async`
 async function mySubscriber(value: string) {
@@ -143,20 +143,20 @@ async function mySubscriber(value: string) {
 }
 
 // Add a subscriber
-$mySubscription.$addSub(mySubscriber);
+mySubscription.$addSub(mySubscriber);
 // Manually trigger the subscribers if needed(rarely)
-$mySubscription.$triggerSubs(); // 'The value is now: hello'
+mySubscription.$triggerSubs(); // 'The value is now: hello'
 
 // Set the value
-$mySubscription.$value = 'world';
+mySubscription.$value = 'world';
 
 // Subscriber runs here -  'The value is now: world'
 
 // Remove a subscriber (can be used in onBeforeUnmount or beforeRouteLeave etc)
-$mySubscription.$deleteSub(mySubscriber);
+mySubscription.$deleteSub(mySubscriber);
 
 // Use the readonly version of the value
-const myReadonlyValue = $mySubscription.$read;
+const myReadonlyValue = mySubscription.$read;
 console.log(myReadonlyValue.value); // 'world'
 ```
 
@@ -165,7 +165,7 @@ console.log(myReadonlyValue.value); // 'world'
 Example uses a complex objects which won't be tracked deeply by default. Unless the subscription is used in template, watch, watchEffect or computed you don't need to add the deep flag.
 
 ```typescript
-const $mySubscription = useSubscription(
+const mySubscription = useSubscription(
 	{
 		user: {
 			name: 'John',
@@ -176,21 +176,21 @@ const $mySubscription = useSubscription(
 	true
 );
 // Add a subscriber
-$mySubscription.$addSub(data => {
+mySubscription.$addSub(data => {
 	console.log(`The data is now: ${JSON.stringify(data)}`);
 });
 
-function myMutator(data: typeof $mySubscription.$value) {
+function myMutator(data: typeof mySubscription.$value) {
 	data.user.isActive = true;
 	return data;
 }
 
 // Trigger the subscribers
-$mySubscription.$triggerSubs(); // 'The data is now: { user: { name: 'John', isActive: false }}'
+mySubscription.$triggerSubs(); // 'The data is now: { user: { name: 'John', isActive: false }}'
 
 function tester() {
 	// Mutate the value (only works if the value is an object)
-	$mySubscription.$mutate(myMutator);
+	mySubscription.$mutate(myMutator);
 	// Subscriber runs here -  'The data is now: { user: { name: 'John', isActive: true }}'
 }
 tester();
