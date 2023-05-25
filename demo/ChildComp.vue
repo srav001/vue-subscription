@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useEventBus } from './composables/eventBus';
+import { useNotifier } from './composables/notifier';
 
-const eventBus = useEventBus();
+const notifier = useNotifier();
 function incrementer() {
-	eventBus.$emit(eventBus.$state.value + 1);
+	notifier.$emit(val => val + 1);
+	// or notifier.$emit(notifier.$state.value + 1);
 }
 </script>
 

@@ -2,8 +2,9 @@ import { dynamicallyExecuteFunction } from './functions/helpers';
 import { ref, shallowRef, readonly } from 'vue';
 
 /**
- * It takes a value and returns an object with a value property that is a shallowRef/ref of the value.
- * passed in, and Subscribers(function) are added to a list to be executed when the value is changed.
+ * It takes a value and returns an object with a value property that is a shallowRef/ref of the value
+ * passed in and Subscribers(function) are added to a list to be executed when the value is changed.
+ * @example useSubscription<T>(value: T, deep = false)
  * @param {T} value - T - The initial value of the subscription.
  * @param {boolean} deep - T - If it should be deep reactivity. By default it is Shallow.
  * @returns A function that returns an object with a shallow/deep reactive value, a subscriber and a
@@ -78,7 +79,7 @@ export function useSubscription<T>(value: T, deep = false) {
 			else setValue(val);
 		},
 
-		/** ReadOnly version of value. Wraps the shallow ref in readonly */
+		/** ReadOnly version of value. Wraps the ref in readonly */
 		$read: readonly(_subRef),
 
 		/**
@@ -108,7 +109,7 @@ export function useSubscription<T>(value: T, deep = false) {
 		 */
 		$mutate(mutator: ValueMutator) {
 			if (typeof _subRef.value !== 'object') {
-				throw new Error('Value passed is not an typeof object! Patch only accepts typeof object');
+				throw new Error('Value passed is not an typeof object! $mutate only accepts `typeof object`');
 			}
 			mutateSubscriber(mutator);
 		}
