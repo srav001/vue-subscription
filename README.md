@@ -274,7 +274,7 @@ An object with the following properties (Type def above):
 - $read - A readonly reactive reference to the current value of the subscription.
 - $addSub - A method for adding a subscriber to the subscription. It can be `async`. The subscriber is a function that will be executed whenever the value of the subscription changes. It can take the new value of the subscription as its argument.
 - $deleteSub - A method for removing a subscriber from the subscription.
-- $clearSub - A method for clearing all subscribers.
+- $clearSubs - A method for clearing all subscribers.
 - $triggerSubs - A method for manually triggering all subscribers. Should only be needed rarely.
 - $mutate - A method for updating the value of the subscription with a function that takes the current value as its argument and returns the new value. This should only be used for updating complex objects.
 
