@@ -6,13 +6,13 @@
  * @returns A promise that resolves to the result of the function.
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export async function dynamicallyExecuteFunction<T>(func: Function, arg: T) {
+export async function dynamicallyExecuteFunction<T = unknown>(func: Function, arg: unknown) {
 	try {
 		const result = func(arg);
 		if (result instanceof Promise) {
-			return await result;
+			return (await result) as T;
 		} else {
-			return result;
+			return result as T;
 		}
 	} catch (err) {
 		throw new Error('Function failed to run', { cause: err });
