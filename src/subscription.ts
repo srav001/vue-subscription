@@ -1,5 +1,6 @@
 import { dynamicallyExecuteFunction } from './functions/helpers';
 import { ref, shallowRef, readonly } from 'vue';
+import type { Ref, ShallowRef } from 'vue';
 
 /**
  * It takes a value and returns an object with a value property that is a shallowRef/ref of the value
@@ -10,73 +11,44 @@ import { ref, shallowRef, readonly } from 'vue';
  * @returns A function that returns an object with a shallow/deep reactive value, a subscriber and a
  * few extra methods.
  */
-export function useSubscription<T>(value: T, deep = false) {
+export function useSubscription<T, D extends boolean = false>(value: T, deep: D = false as D) {
 	if (value === undefined) {
 		throw new Error('No value provided, Initial value is required');
 	}
 
-	const _subRef = deep === false ? shallowRef(value) : ref(value);
-	type SubType = typeof _subRef.value;
+	type SubType = D extends false ? ShallowRef<T> : Ref<T>;
+	const _subRef = (deep === false ? shallowRef(value) : ref(value)) as SubType;
+	type SubValue = SubType['value'];
 
-	type Subscriber = (val: SubType) => Promise<void> | void;
+	type Subscriber = (val: SubValue) => Promise<void> | void;
 	const _subscriptions: Set<Subscriber> = new Set();
-	/**
-	 * Takes a function as an argument and adds it to the subscriber list.
-	 * @param subscriber - Subscriber
-	 */
-	function addSubscriber(subscriber: Subscriber) {
-		if (typeof subscriber !== 'function') {
-			throw new Error('Subscriber must be a function');
-		}
-		_subscriptions.add(subscriber);
-	}
-	/**
-	 * It deletes an event/subscriber from the subscriptions list.
-	 * @param subscriber - Subscriber
-	 */
-	function deleteSubscriber(subscriber: Subscriber) {
-		_subscriptions.delete(subscriber);
-	}
 	/**
 	 * It loops through the Set of subscribers and executes each function with the value passed in as
 	 * an argument
 	 * @param {SubType} val - The value that is being passed to the subscribers.
 	 */
-	function triggerSubscribers(val: SubType) {
+	function triggerSubscribers(val: SubValue) {
 		_subscriptions.forEach(dep => dynamicallyExecuteFunction(dep, val));
 	}
-	type ValueMutator = (val: SubType) => SubType;
-	/**
-	 * It mutates the $value - for complex types that are typeof object.
-	 * @param mutator - (val: T) => T
-	 */
-	async function mutateSubscriber(mutator: ValueMutator) {
-		if (typeof mutator !== 'function') {
-			throw new Error('Mutation must be a function');
-		}
-		_subRef.value = await dynamicallyExecuteFunction(mutator, _subRef.value);
-		triggerSubscribers(_subRef.value);
-	}
 
-	function setValue(val: SubType) {
+	function setValue(val: T) {
 		_subRef.value = val;
 		triggerSubscribers(val);
 	}
-
 	return {
-		get $value(): SubType {
+		get $value(): SubValue {
 			return _subRef.value;
 		},
-		set $value(val) {
+		set $value(val: T) {
 			setValue(val);
 		},
 
-		$get(): SubType {
+		$get(): SubValue {
 			return _subRef.value;
 		},
-		$set(val: SubType | ValueMutator) {
+		$set<V extends SubValue | ((val: SubValue) => SubValue)>(val: V) {
 			if (typeof val === 'function') setValue(val(_subRef.value));
-			else setValue(val);
+			else setValue(val as SubValue);
 		},
 
 		/** ReadOnly version of value. Wraps the ref in readonly */
@@ -87,14 +59,17 @@ export function useSubscription<T>(value: T, deep = false) {
 		 * @param subscriber - type Subscriber = (val: T) => Promise<void> | void;
 		 */
 		$addSub(subscriber: Subscriber) {
-			addSubscriber(subscriber);
+			if (typeof subscriber !== 'function') {
+				throw new Error('Subscriber must be a function');
+			}
+			_subscriptions.add(subscriber);
 		},
 		/**
 		 * A method that allows you to delete a subscriber from the Set of subscribers.
 		 * @param subscriber - Subscriber
 		 */
 		$deleteSub(subscriber: Subscriber) {
-			deleteSubscriber(subscriber);
+			_subscriptions.delete(subscriber);
 		},
 		/**
 		 * Manually trigger subscribers. Shouldn't be used unless explicity needed (rarely).
@@ -102,16 +77,29 @@ export function useSubscription<T>(value: T, deep = false) {
 		$triggerSubs() {
 			triggerSubscribers(_subRef.value);
 		},
+		/**
+		 * Clears all subscribers. Easy for cleanup in beforeUnmount.
+		 */
+		$clearSubs() {
+			_subscriptions.clear();
+		},
 
 		/**
 		 * It mutates the value of the object.
 		 * @param mutator - (val: T) => T
+		 * @param mutator - (val: T) => Promise<T>
 		 */
-		$mutate(mutator: ValueMutator) {
+		async $mutate(mutator: (val: SubValue) => SubValue | Promise<SubValue>) {
 			if (typeof _subRef.value !== 'object') {
 				throw new Error('Value passed is not an typeof object! $mutate only accepts `typeof object`');
 			}
-			mutateSubscriber(mutator);
+			if (typeof mutator !== 'function') {
+				throw new Error('Mutator must be a function');
+			}
+			_subRef.value = await dynamicallyExecuteFunction(mutator, _subRef.value);
+			triggerSubscribers(_subRef.value);
+
+			return _subRef.value;
 		}
 	};
 }
