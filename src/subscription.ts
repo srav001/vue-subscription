@@ -20,7 +20,7 @@ export function useSubscription<T, D extends boolean = false>(value: T, deep: D 
 	const _subRef = (deep === false ? shallowRef(value) : ref(value)) as SubType;
 	type SubValue = SubType['value'];
 
-	type Subscriber = (val: SubType) => Promise<void> | void;
+	type Subscriber = (val: SubValue) => Promise<void> | void;
 	const _subscriptions: Set<Subscriber> = new Set();
 	/**
 	 * It loops through the Set of subscribers and executes each function with the value passed in as
