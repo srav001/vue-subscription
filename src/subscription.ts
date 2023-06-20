@@ -55,7 +55,7 @@ export function useSubscription<T, D extends boolean = false>(value: T, deep: D 
 		$read: readonly(_subRef),
 
 		/**
-		 * A Subscriber(function) is executed when the value is changed.
+		 * A Subscriber(function) is executed when the value has changed.
 		 * @param subscriber - type Subscriber = (val: T) => Promise<void> | void;
 		 */
 		$addSub(subscriber: Subscriber) {
