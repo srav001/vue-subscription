@@ -1,6 +1,6 @@
 {
 	"name": "vue-subscription",
-	"version": "1.0.2",
+	"version": "1.0.4",
 	"description": "A type-safe 🔥 & tiny ⭐️ super-charged ref ⚡️ / eventBus replacement in Vue 💚.",
 	"keywords": [
 		"web",
